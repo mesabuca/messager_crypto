@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @email.title %>
+</p>
+
+<p>
+  <strong>Receiver:</strong>
+  <%= @email.receiver.email %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @email.content %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @email.user.email %>
+</p>
+
+<p>
+  <strong>Check sum:</strong>
+  <%= @email.check_sum %>
+</p>
+
+<p>
+  <strong>Check sum:</strong>
+  <%= @check_sum %>
+</p>
+
+<p>
+  <strong>Check sum:</strong>
+  <%= @check_sum == @email.check_sum ? 'Check sum identified' : 'Checksum not identified' %>
+</p>
+
+<%= link_to 'Edit', edit_email_path(@email, {decrypt: {aes_key: params[:decrypt][:aes_key]}}) %> |
+<%= params[:aes_key] %>

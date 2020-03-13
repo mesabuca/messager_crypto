@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @email.title %>
+</p>
+
+<p>
+  <strong>Receiver:</strong>
+  <%= @email.receiver.email %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @email.content %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @email.user.email %>
+</p>
+
+<p>
+  <strong>Check sum:</strong>
+  <%= @email.check_sum %>
+</p>
+
+<%= link_to 'Edit', edit_email_path(@email) %> |
+<%= link_to 'Back', emails_path %>
+
+<%= form_with(scope: :decrypt, url: email_decrypt_path(@email), method: :get, local: true) do |form| %>
+
+<div class="field">
+  <%= form.label :aes_key %>
+  <%= form.text_field :aes_key %>
+</div>
+
+<div class="actions">
+  <%= form.submit %>
+</div>
+
+<% end %>
