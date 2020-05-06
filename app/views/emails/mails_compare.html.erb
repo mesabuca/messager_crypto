@@ -1,0 +1,88 @@
+<% # encoding: utf-8 %> 
+<p id="notice"><%= notice %></p>
+<% if params[:compare].present? %>
+  <h3>Email 1</h3>
+  <p>
+    <strong>Title:</strong>
+    <%= @email1.title %>
+  </p>
+
+  <p>
+    <strong>Content:</strong>
+    <%= @email1.content %>
+  </p>
+
+  <p>
+    <strong>Sended Check sum:</strong>
+    <%= @email1.check_sum %>
+  </p>
+
+  <p>
+    <strong>Words:</strong>
+    <% @email1.word_analytics.each do |key, value| %>
+      <%= "#{key} - #{value} |" %>
+    <% end %>
+  </p>
+
+  <h3>Email 2</h3>
+  <p>
+    <strong>Title:</strong>
+    <%= @email2.title %>
+  </p>
+
+  <p>
+    <strong>Content:</strong>
+    <%= @email2.content %>
+  </p>
+
+  <p>
+    <strong>Sended Check sum:</strong>
+    <%= @email2.check_sum %>
+  </p>
+
+  <p>
+    <strong>Words:</strong>
+    <% @email2.word_analytics.each do |key, value| %>
+      <%= "#{key} - #{value} |" %>
+    <% end %>
+  </p>
+
+  <hr>
+  <h3>Similarities</h3>
+  <% @similarity.each do |key, value| %>
+    <p>
+      <strong><%= key %></strong>
+      <%= value %>
+    </p>
+  <% end %>
+<% else %>
+  <%= form_with(scope: :compare, url: emails_compare_path(@email), method: :get, local: true) do |form| %>
+    <h3>Email 1</h3>
+    <div class="field">
+      <%= form.label 'Email id' %>
+      <%= form.number_field :mail1_id %>
+    </div>
+
+    <div class="field">
+      <%= form.label 'Email key' %>
+      <%= form.text_field :mail1_key %>
+    </div>
+
+    <h3>Email 1</h3>
+
+    <div class="field">
+      <%= form.label 'Email id' %>
+      <%= form.number_field :mail2_id %>
+    </div>
+
+    <div class="field">
+      <%= form.label 'Email key' %>
+      <%= form.text_field :mail2_key %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+
+  <% end %>
+<% end %>

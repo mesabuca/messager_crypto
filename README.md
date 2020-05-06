@@ -47,3 +47,24 @@ Sabit kullanilan bir anahtar bulunmamaktadir gonderici anahtari kendisi belirlem
 
 Anahtari kullanmak icin maili goster dediginizde onunuze cikan alana keyi girip formu
 submitlediginizde mesaj cozulu halde size gosterilecektir.
+
+
+
+Adim 3
+
+Oncelikle yeni gelen özellikler için şu komutları sırasıyla çalıştırıyoruz
+
+```shell script
+bundle install
+rails db:migrate
+```
+
+Daha sonra serverımızı durdurup yeniden başlatıyoruz. `rails s`
+Browserımızdan `localhost:3000` linkine gidip login oluyoruz.
+Eğer daha önce random 5 email oluşturulmamışsa veya databaseinizde 
+mevcut değilse (mailler silinirse) keyi title'ına iliştirilmiş 5 random mail üretir.
+
+Ayrıca ana sayfada yer alan 'Compare Mails' linki ile 2 mailin adresini ve şifrelenmiş 
+keylerini girerek maillerin içeriklerini ve checksumlarını karşılaştırabilirsiniz.
+
+Son olarak oluşturulmuş bir maili checksumı işaretlemeden içeriği güncellerseniz checksomlar eşleşmez

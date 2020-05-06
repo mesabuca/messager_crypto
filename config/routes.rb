@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
+  post 'emails/random_mails', to: 'emails#five_random_mail'
+  get 'emails/compare', to: 'emails#mails_compare'
   resources :emails do
     get 'decrypt', to: 'emails#decrypt'
   end
-  get 'emails/new'
   get 'dashboards/index'
   get 'dashboards/show'
   devise_for :users

@@ -21,19 +21,18 @@
 </p>
 
 <p>
-  <strong>Check sum:</strong>
+  <strong>Sended Check sum:</strong>
   <%= @email.check_sum %>
 </p>
 
 <p>
-  <strong>Check sum:</strong>
+  <strong>Calculated Check sum:</strong>
   <%= @check_sum %>
 </p>
 
 <p>
-  <strong>Check sum:</strong>
+  <strong>Check sum result:</strong>
   <%= @check_sum == @email.check_sum ? 'Check sum identified' : 'Checksum not identified' %>
 </p>
 
 <%= link_to 'Edit', edit_email_path(@email, {decrypt: {aes_key: params[:decrypt][:aes_key]}}) %> |
-<%= params[:aes_key] %>

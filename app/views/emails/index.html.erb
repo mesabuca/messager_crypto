@@ -1,10 +1,13 @@
 <p id="notice"><%= notice %></p>
 
+
+
 <h1>Received Emails</h1>
 
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Title</th>
       <th>Receiver</th>
       <th>Content</th>
@@ -16,6 +19,7 @@
   <tbody>
     <% @received_emails.each do |email| %>
       <tr>
+        <td><%= email.id %></td>
         <td><%= email.title %></td>
         <td><%= email.receiver.email %></td>
         <td><%= email.content %></td>
@@ -32,6 +36,7 @@
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Title</th>
       <th>Receiver</th>
       <th>Content</th>
@@ -43,6 +48,7 @@
   <tbody>
     <% @sent_emails.each do |email| %>
       <tr>
+        <td><%= email.id %></td>
         <td><%= email.title %></td>
         <td><%= email.receiver.email %></td>
         <td><%= email.content %></td>
@@ -56,4 +62,6 @@
 </table>
 <br>
 
-<%= link_to 'New Email', new_email_path %>
+<%= link_to 'New Email', new_email_path %> |
+<%= link_to 'Compare Similarity', emails_compare_path %> |
+<%= link_to 'Five Random Mail', emails_random_mails_path, method: :post unless @random_flag %>
