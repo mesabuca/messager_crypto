@@ -2,7 +2,6 @@ require 'openssl'
 
 class EmailsController < ApplicationController
   before_action :set_email, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
 
   WORDS = 'Consider yourself a task I have ended. Our relationship, a 404 not found. Our connection now disconnected. You, a broken link I wish I had been forbidden to visit, a threat I did not initially detect. You became a virus in my system, and I had to Malware you out of it. I have now completed the uninstallation process, have reset my life’s device back to its original settings from before five years ago when I mistakenly trusted your download of lies. So good luck spamming your way into someone else’s unregistered trust—I have already reported your corrupted files.'
 
@@ -53,11 +52,11 @@ class EmailsController < ApplicationController
 
   def rsa_public_verify
     decrypt_process(params[:rsa_public_verify][:aes_key])
-    cont_key, check_key = rsa_public_verify_params.values.map { |key| OpenSSL::PKey::RSA.new key }
-    @cont_flag = cont_key.verify_pss("SHA256", @email.content_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
+    pub_key = OpenSSL::PKey::RSA.new  params[:rsa_public_verify][:public_key]
+    @cont_flag = pub_key.verify_pss("SHA256", @email.content_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
                                      @email.content,
                                      salt_length: :auto, mgf1_hash: "SHA256")
-    @check_flag = check_key.verify_pss("SHA256", @email.check_sum_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
+    @check_flag = pub_key.verify_pss("SHA256", @email.check_sum_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
                                        @email.check_sum,
                                        salt_length: :auto, mgf1_hash: "SHA256")
   end

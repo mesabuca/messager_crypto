@@ -4,11 +4,14 @@ Rails.application.routes.draw do
   resources :emails do
     get 'decrypt', to: 'emails#decrypt'
     get 'rsa_public_verify', to: 'emails#rsa_public_verify'
-
   end
+  get 'sms_verification', to: 'sms_verification#index'
+  post 'sms_verification', to: 'sms_verification#submit'
+
+
   get 'dashboards/index'
   get 'dashboards/show'
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
   root to: 'emails#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

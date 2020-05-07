@@ -38,14 +38,10 @@
 <%= form_with(scope: :rsa_public_verify, url: email_rsa_public_verify_path(@email), method: :get, local: true) do |form| %>
 
 <div class="field">
-  <%= form.label :content_key %>
-  <%= form.text_area :content_key %>
+  <%= form.label :public_key %>
+  <%= form.text_area :public_key %>
 </div>
 
-<div class="field">
-  <%= form.label :check_sum_key %>
-  <%= form.text_area :check_sum_key %>
-</div>
 <%= form.hidden_field :aes_key, value: params[:decrypt][:aes_key] %>
 
 <div class="actions">

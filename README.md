@@ -61,10 +61,24 @@ rails db:migrate
 
 Daha sonra serverımızı durdurup yeniden başlatıyoruz. `rails s`
 Browserımızdan `localhost:3000` linkine gidip login oluyoruz.
-Eğer daha önce random 5 email oluşturulmamışsa veya databaseinizde 
+Eğer daha önce random 5 email oluşturulmamışsa veya databaseinizde
 mevcut değilse (mailler silinirse) keyi title'ına iliştirilmiş 5 random mail üretir.
 
-Ayrıca ana sayfada yer alan 'Compare Mails' linki ile 2 mailin adresini ve şifrelenmiş 
+Ayrıca ana sayfada yer alan 'Compare Mails' linki ile 2 mailin adresini ve şifrelenmiş
 keylerini girerek maillerin içeriklerini ve checksumlarını karşılaştırabilirsiniz.
 
 Son olarak oluşturulmuş bir maili checksumı işaretlemeden içeriği güncellerseniz checksomlar eşleşmez
+
+
+Adim 4 - 5 - 6
+
+Ilk olarak yeni gelen paketler ve migration dosyalari icin `bundle` ve `rails db:migrate` ve daha sonnrasinda `rails db:reset` calistiriyoruz
+Daha sonra 4. gorevin bolumunu incelemek icin yeni bir mail formuna gidiyoruz. sayfada da goruldugu gibi pkey rsa kullanilsin diye bir secenek
+bulunmakta eger onu secerseniz mail private keye gore imzalanip public keye gore cozumlenebilen bir yapi maile dahil oluyor. Lakin karsidaki
+kullanici sizin public keyinizi bilmek durumunda dir bunun icinde gecici sureligine bu public keyi cosole da bastirdik.
+
+5. Adimda gerceklestirmemiz gereken gorev icin ruby de bir steganography kutuphanesi bulamadigim icin sadece watermark kism bulunmakta.
+Onuda mail gonderirken sececeginiz ilk ana resim ve watermark resimiyle gerceklestirebilmektesiniz.
+
+6. adimin gorevide aradaki adam ve brute force saldirisina karsi two step authentication uygulandi.
+Bu sekilde verification kodu surekli degistigi icin bruteforce saldirisi da bir o kadar etkisiz kalacaktir. Ayrica herhangi bir sms api i kullanmamak icin su anda sms koduu cosole a basmaktadir.

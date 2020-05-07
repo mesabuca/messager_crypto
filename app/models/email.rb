@@ -14,18 +14,16 @@ class Email < ApplicationRecord
   private
 
   def apply_pkey_rsa
-    pkey1 = OpenSSL::PKey::RSA.new(2048)
-    pkey2 = OpenSSL::PKey::RSA.new(2048)
+    pkey = OpenSSL::PKey::RSA.new(2048)
 
-    self.content_sign = pkey1.sign_pss("SHA256", content, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
-    self.check_sum_sign = pkey2.sign_pss("SHA256", check_sum, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
+    self.content_sign = pkey.sign_pss("SHA256", content, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
+    self.check_sum_sign = pkey.sign_pss("SHA256", check_sum, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
 
-    puts 'Public Keys For Content And Check Sum By Order'
+    puts 'Public Key For Content And Check Sum By Order'
     puts '###################################################################'
-    puts pkey1.public_key.export
+    puts pkey.public_key.export
     puts '###################################################################'
-    puts pkey2.public_key.export
-    puts '###################################################################'
+
     # puts pub_key.verify_pss("SHA256", signature, data, salt_length: :auto, mgf1_hash: "SHA256") # => true
   end
 

@@ -1,0 +1,12 @@
+<%= form_with(scope: :sms, url: sms_verification_path, local: true) do |form| %>
+
+<div class="field">
+  <%= form.label :sms_code %>
+  <%= form.text_field :code %>
+</div>
+
+<div class="actions">
+  <%= form.submit %>
+</div>
+
+<% end %>
