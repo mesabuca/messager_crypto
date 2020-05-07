@@ -24,12 +24,12 @@
   <strong>Check sum:</strong>
   <%= @email.check_sum %>
 </p>
+<% if @email.file.present? %>
+  <%= image_tag @email.file.variant( combine_options: { resize: "250",
+                                                        gravity: 'center',
+                                                        draw: "image Over 0,0 20,20 '#{rails_blob_url(@email.wmark)}'" })  %>
+<% end %>
 
-<%= image_tag @email.file.variant( combine_options: { resize: "250",
-                                                      gravity: 'center',
-                                                      draw: "image Over 0,0 20,20 '#{rails_blob_url(@email.wmark)}'" })  %>
-
-<%= link_to 'Edit', edit_email_path(@email) %> |
 <%= link_to 'Back', emails_path %>
 
 <%= form_with(scope: :decrypt, url: email_decrypt_path(@email), method: :get, local: true) do |form| %>

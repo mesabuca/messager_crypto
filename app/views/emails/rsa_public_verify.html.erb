@@ -42,4 +42,4 @@
 <p>
   <strong style="color: <%= @check_flag ? 'green' : 'red' %>"><%= @check_flag %></strong>
 </p>
-<%= link_to 'Edit', edit_email_path(@email, {decrypt: {aes_key: params[:decrypt][:aes_key]}}) %> |
+<%= link_to 'Back', emails_path %>

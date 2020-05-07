@@ -1,14 +1,14 @@
 class Email < ApplicationRecord
-  attr_accessor :receiver_email, :aes_key, :check
+  attr_accessor :receiver_email, :aes_key, :check, :pkey_rsa
   belongs_to :user
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
   has_one_attached :file
   has_one_attached :wmark
 
-  before_validation :apply_pkey_rsa, if: :pkey_rsa?
+  before_validation :generate_check_sum, if: :check
+  before_validation :apply_pkey_rsa, if: :pkey_rsa
   before_validation :set_receiver
   before_validation :word_analyzer
-  before_validation :generate_check_sum, if: :check
   before_validation :aes_256_cbc
 
   private
@@ -17,8 +17,8 @@ class Email < ApplicationRecord
     pkey1 = OpenSSL::PKey::RSA.new(2048)
     pkey2 = OpenSSL::PKey::RSA.new(2048)
 
-    signature = pkey1.sign_pss("SHA256", content, salt_length: :max, mgf1_hash: "SHA256")
-    signature = pkey2.sign_pss("SHA256", check_sum, salt_length: :max, mgf1_hash: "SHA256")
+    self.content_sign = pkey1.sign_pss("SHA256", content, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
+    self.check_sum_sign = pkey2.sign_pss("SHA256", check_sum, salt_length: :max, mgf1_hash: "SHA256").force_encoding('ISO-8859-1').encode('UTF-8').gsub("\u0000", "null")
 
     puts 'Public Keys For Content And Check Sum By Order'
     puts '###################################################################'

@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2020_05_07_125034) do
     t.string "check_sum"
     t.jsonb "word_analytics"
     t.boolean "pkey_rsa"
+    t.text "content_sign"
+    t.text "check_sum_sign"
     t.index ["user_id"], name: "index_emails_on_user_id"
   end
 

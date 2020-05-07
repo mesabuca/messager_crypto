@@ -52,12 +52,14 @@ class EmailsController < ApplicationController
   end
 
   def rsa_public_verify
-    cont_key, check_key = rsa_public_verify_params.each_values { |key| OpenSSL::PKey::RSA.new key }
-    @email.new(params[:decrypted_params])
-    @cont_flag = cont_key.verify_pss("SHA256", signature, @email.content,
-                        salt_length: :auto, mgf1_hash: "SHA256")
-    @check_flag = check_key.verify_pss("SHA256", signature, @email.check_sum,
-                        salt_length: :auto, mgf1_hash: "SHA256")
+    decrypt_process(params[:rsa_public_verify][:aes_key])
+    cont_key, check_key = rsa_public_verify_params.values.map { |key| OpenSSL::PKey::RSA.new key }
+    @cont_flag = cont_key.verify_pss("SHA256", @email.content_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
+                                     @email.content,
+                                     salt_length: :auto, mgf1_hash: "SHA256")
+    @check_flag = check_key.verify_pss("SHA256", @email.check_sum_sign.gsub("null","\u0000").encode('ISO-8859-1').force_encoding('ASCII-8BIT'),
+                                       @email.check_sum,
+                                       salt_length: :auto, mgf1_hash: "SHA256")
   end
 
   # PATCH/PUT /emails/1
@@ -136,7 +138,7 @@ class EmailsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def email_params
-    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check, :file, :wmark, :pkey_rsa?)
+    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check, :file, :wmark, :pkey_rsa)
   end
 
   def decrypt_params
