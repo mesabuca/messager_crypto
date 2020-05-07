@@ -25,6 +25,10 @@
   <%= @email.check_sum %>
 </p>
 
+<%= image_tag @email.file.variant( combine_options: { resize: "250",
+                                                      gravity: 'center',
+                                                      draw: "image Over 0,0 20,20 '#{rails_blob_url(@email.wmark)}'" })  %>
+
 <%= link_to 'Edit', edit_email_path(@email) %> |
 <%= link_to 'Back', emails_path %>
 

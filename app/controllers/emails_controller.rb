@@ -123,7 +123,7 @@ class EmailsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def email_params
-    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check)
+    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check, :file, :wmark)
   end
 
   def decrypt_params
