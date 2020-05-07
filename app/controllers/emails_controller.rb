@@ -51,6 +51,15 @@ class EmailsController < ApplicationController
     @check_sum = Digest::SHA256.hexdigest(@email.content)
   end
 
+  def rsa_public_verify
+    cont_key, check_key = rsa_public_verify_params.each_values { |key| OpenSSL::PKey::RSA.new key }
+    @email.new(params[:decrypted_params])
+    @cont_flag = cont_key.verify_pss("SHA256", signature, @email.content,
+                        salt_length: :auto, mgf1_hash: "SHA256")
+    @check_flag = check_key.verify_pss("SHA256", signature, @email.check_sum,
+                        salt_length: :auto, mgf1_hash: "SHA256")
+  end
+
   # PATCH/PUT /emails/1
   # PATCH/PUT /emails/1.json
   def update
@@ -115,6 +124,10 @@ class EmailsController < ApplicationController
     @email.content = text.split('-divider-')[0]
     @email
   end
+
+  def rsa_public_verify_params
+    params.require(:rsa_public_verify).permit(:content_key, :check_sum_key)
+  end
   # Use callbacks to share common setup or constraints between actions.
   def set_email
     @email = current_user.received_emails.find(params[:id])
@@ -123,7 +136,7 @@ class EmailsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def email_params
-    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check, :file, :wmark)
+    params.require(:email).permit(:title, :receiver_email, :content, :user, :aes_key, :check, :file, :wmark, :pkey_rsa?)
   end
 
   def decrypt_params

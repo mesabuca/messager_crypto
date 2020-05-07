@@ -4,6 +4,8 @@ class Email < ApplicationRecord
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
   has_one_attached :file
   has_one_attached :wmark
+
+  before_validation :apply_pkey_rsa, if: :pkey_rsa?
   before_validation :set_receiver
   before_validation :word_analyzer
   before_validation :generate_check_sum, if: :check
@@ -21,6 +23,22 @@ class Email < ApplicationRecord
     end
 
   private
+
+  def apply_pkey_rsa
+    pkey1 = OpenSSL::PKey::RSA.new(2048)
+    pkey2 = OpenSSL::PKey::RSA.new(2048)
+
+    signature = pkey1.sign_pss("SHA256", content, salt_length: :max, mgf1_hash: "SHA256")
+    signature = pkey2.sign_pss("SHA256", check_sum, salt_length: :max, mgf1_hash: "SHA256")
+
+    puts 'Public Keys For Content And Check Sum By Order'
+    puts '###################################################################'
+    puts pkey1.public_key.export
+    puts '###################################################################'
+    puts pkey2.public_key.export
+    puts '###################################################################'
+    # puts pub_key.verify_pss("SHA256", signature, data, salt_length: :auto, mgf1_hash: "SHA256") # => true
+  end
 
   def aes_256_cbc
     return unless aes_key.present?

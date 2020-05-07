@@ -35,23 +35,11 @@
   <%= @check_sum == @email.check_sum ? 'Check sum identified' : 'Checksum not identified' %>
 </p>
 
-<%= form_with(scope: :rsa_public_verify, url: email_rsa_public_verify_path(@email, decrypted_params: @email.attributes), method: :get, local: true) do |form| %>
+<p>
+  <strong style="color: <%= @cont_flag ? 'green' : 'red' %>"><%= @cont_flag %></strong>
+</p>
 
-<div class="field">
-  <%= form.label :content_key %>
-  <%= form.text_area :content_key %>
-</div>
-
-<div class="field">
-  <%= form.label :check_sum_key %>
-  <%= form.text_area :check_sum_key %>
-</div>
-
-<div class="actions">
-  <%= form.submit %>
-</div>
-
-<% end %>
-
-
+<p>
+  <strong style="color: <%= @check_flag ? 'green' : 'red' %>"><%= @check_flag %></strong>
+</p>
 <%= link_to 'Edit', edit_email_path(@email, {decrypt: {aes_key: params[:decrypt][:aes_key]}}) %> |

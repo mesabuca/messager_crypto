@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'emails/compare', to: 'emails#mails_compare'
   resources :emails do
     get 'decrypt', to: 'emails#decrypt'
+    get 'rsa_public_verify', to: 'emails#rsa_public_verify'
+
   end
   get 'dashboards/index'
   get 'dashboards/show'
